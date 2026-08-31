@@ -1411,21 +1411,3 @@ CSV end-to-end test                ✅
 XML end-to-end test                ✅
 ```
 
-## Next Logical Phase
-
-The next phase should turn tonight's manual tests into automated tests:
-
-``` text
-pytest
-  |
-  +--> API tests
-  +--> Parser tests
-  +--> Normalizer tests
-  +--> Mapping tests
-  +--> Append tests
-  +--> Upsert tests
-  +--> Truncate-insert tests
-  +--> Failure scenarios
-```
-
-This will make the framework safer to change and much faster to verify.
