@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "AD-001",
+    "event_type": "LOGIN",
+    "entity": "user01",
+    "action": "SUCCESS"
+  },
+  {
+    "event_id": "AD-002",
+    "event_type": "LOGIN",
+    "entity": "user02",
+    "action": "SUCCESS"
+  },
+  {
+    "event_id": "AD-003",
+    "event_type": "LOGOUT",
+    "entity": "user01",
+    "action": "SUCCESS"
+  }
+]

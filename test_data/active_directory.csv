@@ -1,0 +1,4 @@
+event_id,event_type,entity,action
+CSV-001,LOGIN,user10,SUCCESS
+CSV-002,LOGIN,user20,FAILED
+CSV-003,LOGOUT,user10,SUCCESS

@@ -1,0 +1,20 @@
+<events>
+    <event>
+        <event_id>XML-001</event_id>
+        <event_type>LOGIN</event_type>
+        <entity>user100</entity>
+        <action>SUCCESS</action>
+    </event>
+    <event>
+        <event_id>XML-002</event_id>
+        <event_type>LOGIN</event_type>
+        <entity>user200</entity>
+        <action>FAILED</action>
+    </event>
+    <event>
+        <event_id>XML-003</event_id>
+        <event_type>LOGOUT</event_type>
+        <entity>user100</entity>
+        <action>SUCCESS</action>
+    </event>
+</events>
