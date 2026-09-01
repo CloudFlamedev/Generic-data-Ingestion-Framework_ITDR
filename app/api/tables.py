@@ -1,27 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException
 
-from app.database.connection import get_db, engine
-from app.schemas.table import (
-    PredefinedTableCreate,
-)
+from app.database.connection import engine
+from app.schemas.table import PredefinedTableCreate
 from app.services.table_service import (
     create_predefined_table,
     list_predefined_tables,
 )
-
 
 router = APIRouter(
     prefix="/tables",
     tags=["Predefined Tables"],
 )
 
-
 @router.post("/")
 def create_table(
     request: PredefinedTableCreate,
-    db: Session = Depends(get_db),
 ):
+
     try:
 
         created = create_predefined_table(
@@ -29,7 +24,6 @@ def create_table(
             request.table_name,
             request.fields,
         )
-
         if not created:
             raise HTTPException(
                 status_code=409,
@@ -38,16 +32,19 @@ def create_table(
                     f"{request.table_name}"
                 ),
             )
-
         return {
             "status": "success",
             "message": "Predefined table created",
             "table_name": request.table_name,
         }
-
     except HTTPException:
         raise
+    except ValueError as exc:
 
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        )
     except Exception as exc:
 
         raise HTTPException(
@@ -55,12 +52,8 @@ def create_table(
             detail=str(exc),
         )
 
-
 @router.get("/")
-def list_tables(
-    db: Session = Depends(get_db),
-):
-
+def list_tables():
     return {
         "tables": list_predefined_tables(
             engine

@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import inspect, select
 
 from app.models.mapping import (
     MappingDefinition,
@@ -8,6 +8,7 @@ from app.models.mapping import (
 
 def create_mapping(db, mapping_data):
 
+    # Check mapping name
     existing = db.scalar(
         select(MappingDefinition).where(
             MappingDefinition.mapping_name
@@ -19,6 +20,17 @@ def create_mapping(db, mapping_data):
         raise ValueError(
             f"Mapping already exists: "
             f"{mapping_data.mapping_name}"
+        )
+
+    # Destination table must already exist.
+    # Tables are created separately through /tables/.
+    inspector = inspect(db.bind)
+
+    if mapping_data.destination_table not in inspector.get_table_names():
+        raise ValueError(
+            f"Destination table does not exist: "
+            f"{mapping_data.destination_table}. "
+            "Create the predefined table first using POST /tables/."
         )
 
     mapping = MappingDefinition(
@@ -56,8 +68,6 @@ def create_mapping(db, mapping_data):
 
 def list_mappings(db):
 
-    mappings = db.scalars(
+    return db.scalars(
         select(MappingDefinition)
     ).all()
-
-    return mappings

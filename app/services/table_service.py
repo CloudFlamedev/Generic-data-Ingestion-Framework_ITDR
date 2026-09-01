@@ -12,6 +12,13 @@ from sqlalchemy import (
 )
 
 
+FRAMEWORK_TABLES = {
+    "mapping_definitions",
+    "mapping_fields",
+    "ingestion_failure_log",
+}
+
+
 TYPE_MAP = {
     "string": String(255),
     "varchar": String(255),
@@ -28,7 +35,7 @@ TYPE_MAP = {
 
 def normalize_type(data_type: str):
 
-    data_type = data_type.lower()
+    data_type = data_type.lower().strip()
 
     if data_type.startswith("varchar"):
         return String(255)
@@ -47,8 +54,22 @@ def create_predefined_table(
     fields,
 ):
 
+    table_name = table_name.strip()
+
+    if not table_name:
+        raise ValueError(
+            "Table name cannot be empty"
+        )
+
+    if table_name in FRAMEWORK_TABLES:
+        raise ValueError(
+            f"'{table_name}' is a framework table "
+            "and cannot be created as a destination table."
+        )
+
     inspector = inspect(engine)
 
+    # Predefined tables are created only once.
     if table_name in inspector.get_table_names():
         return False
 
@@ -69,21 +90,33 @@ def create_predefined_table(
         ),
     ]
 
+    existing_column_names = {
+        "id",
+        "event_id",
+        "raw_data",
+    }
+
     for field in fields:
 
-        if field.name in {
-            "id",
-            "event_id",
-        }:
+        field_name = field.name.strip()
+
+        if not field_name:
+            raise ValueError(
+                "Destination field name cannot be empty"
+            )
+
+        if field_name in existing_column_names:
             continue
 
         columns.append(
             Column(
-                field.name,
+                field_name,
                 normalize_type(field.data_type),
                 nullable=field.nullable,
             )
         )
+
+        existing_column_names.add(field_name)
 
     columns.append(
         Column(
@@ -111,14 +144,8 @@ def list_predefined_tables(engine):
 
     inspector = inspect(engine)
 
-    excluded = {
-        "mapping_definitions",
-        "mapping_fields",
-        "ingestion_failure_log",
-    }
-
     return [
         table
         for table in inspector.get_table_names()
-        if table not in excluded
+        if table not in FRAMEWORK_TABLES
     ]

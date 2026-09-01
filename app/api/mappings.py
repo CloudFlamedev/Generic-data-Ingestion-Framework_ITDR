@@ -32,6 +32,8 @@ def create_mapping_api(
             "status": "success",
             "mapping_id": mapping.id,
             "mapping_name": mapping.mapping_name,
+            "destination_table": mapping.destination_table,
+            "file_type": mapping.file_type,
         }
 
     except ValueError as exc:

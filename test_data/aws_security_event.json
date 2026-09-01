@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "AWS-001",
+    "event_type": "LOGIN",
+    "entity": "aws-user-01",
+    "action": "SUCCESS"
+  },
+  {
+    "event_id": "AWS-002",
+    "event_type": "LOGIN",
+    "entity": "aws-user-02",
+    "action": "FAILED"
+  },
+  {
+    "event_id": "AWS-003",
+    "event_type": "LOGOUT",
+    "entity": "aws-user-01",
+    "action": "SUCCESS"
+  }
+]
