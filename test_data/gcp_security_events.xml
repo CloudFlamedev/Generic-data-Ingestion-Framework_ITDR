@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+    <event>
+        <event_id>GCP-004</event_id>
+        <event_type>LOGIN</event_type>
+        <entity>gcp-user-03</entity>
+        <action>SUCCESS</action>
+    </event>
+    <event>
+        <event_id>GCP-005</event_id>
+        <event_type>IAM_PERMISSION_CHANGE</event_type>
+        <entity>gcp-admin-02</entity>
+        <action>SUCCESS</action>
+    </event>
+    <event>
+        <event_id>GCP-006</event_id>
+        <event_type>ACCESS_DENIED</event_type>
+        <entity>gcp-user-04</entity>
+        <action>FAILED</action>
+    </event>
+</events>

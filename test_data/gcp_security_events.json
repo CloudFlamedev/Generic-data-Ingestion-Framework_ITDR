@@ -1,0 +1,20 @@
+[
+  {
+    "event_id": "GCP-001",
+    "event_type": "LOGIN",
+    "entity": "gcp-user-01",
+    "action": "SUCCESS"
+  },
+  {
+    "event_id": "GCP-002",
+    "event_type": "IAM_PERMISSION_CHANGE",
+    "entity": "gcp-admin-01",
+    "action": "SUCCESS"
+  },
+  {
+    "event_id": "GCP-003",
+    "event_type": "ACCESS_DENIED",
+    "entity": "gcp-user-02",
+    "action": "FAILED"
+  }
+]

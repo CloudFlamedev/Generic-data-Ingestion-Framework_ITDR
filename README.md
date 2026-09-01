@@ -106,7 +106,19 @@ PostgreSQL Destination Table
           | Table                 |
           +-----------------------+
 ```
-
+``` Data_base
+                 PostgreSQL Database
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+   Framework Tables              Data Tables
+          │                           │
+          ├── mapping_definitions     ├── active_directory
+          │                           ├── aws_cloud
+          ├── mapping_fields          └── gcp_cloud
+          │
+          └── ingestion_failure_log
+```
 ------------------------------------------------------------------------
 
 ## 3. Technologies Used
@@ -133,50 +145,41 @@ PostgreSQL Destination Table
 ``` text
 ITDR_GENERIC_DATA_INGESTION_FRAMEWORK/
 │
-├── app/
+├── app/ - endpoints - geting data through these endpoints (API layer. This is where HTTP endpoints are exposed.)
 │   ├── api/
 │   │   ├── ingestion.py
 │   │   ├── mappings.py
-│   │   └── tables.py
+│   │   └── tables.py 
 │   │
-│   ├── core/
-│   │   └── config.py
+│   ├── core/- config.py centralizes our application configuration. Currently, its main responsibility is loading and validating the PostgreSQL DATABASE_URL form    the .env file, so database credentials aren't hard-coded into our Python code."
 │   │
-│   ├── database/
-│   │   ├── base.py
-│   │   └── connection.py
+│   ├── database/ - ( Database connection and database-related configuration. )
 │   │
-│   ├── models/
-│   │   ├── ingestion.py
-│   │   └── mapping.py
+│   ├── models/ - (SQLAlchemy database models.)
 │   │
-│   ├── normalizers/
-│   │   └── generic.py
+│   ├── normalizers/ - ( Responsible for converting parsed input into a consistent structure before loading. )
 │   │
-│   ├── operations/
-│   │   └── database_operations.py
+│   ├── operations/ - ( Database loading operations such as insert/upsert. )
 │   │
-│   ├── parsers/
-│   │   └── generic.py
+│   ├── parsers/ - (Parse = Read the incoming data and convert it into a structure the application can understand.)-Then our framework can validate it, apply the   mapping, and insert it into PostgreSQL.
 │   │
-│   ├── schemas/
-│   │   ├── ingestion.py
-│   │   ├── mapping.py
-│   │   └── table.py
+│   ├── schemas/ - (Request and response validation models.)
 │   │
-│   ├── services/
+│   ├── services/ -- (Business logic is separated from the API layer. For example, mapping_service handles mapping-related operations and ingestion_service handles ingestion logic.)
 │   │   ├── ingestion_service.py
 │   │   ├── mapping_service.py
 │   │   └── table_service.py
 │   │
-│   └── main.py
+│   └── main.py- 
 │
-├── test_data/
+├── test_data/ - (Sample source files used to demonstrate and test the framework.)
 │   ├── active_directory.json
 │   ├── active_directory_2.json
 │   ├── active_directory.csv
-│   └── active_directory.xml
+│   ├── active_directory.xml
+│   └── aws_security_event.json
 │
+├── tests/
 ├── .env
 ├── .env.example
 ├── requirements.txt
